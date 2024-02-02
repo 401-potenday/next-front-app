@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import loginCharacter from '@/assets/images/login_character.png';
 import handleValidCheckNickname from '@/apis/login/handleValidCheckNickname';
 import { useRouter } from 'next/navigation';
-import handleUpdatedNickname from '@/apis/login/handleUpdatedNickname';
 
 const NicknamePage = () => {
   const router = useRouter();
@@ -19,18 +18,12 @@ const NicknamePage = () => {
         if (res.result === 'SUCCESS') {
           res?.data.isAvailable === false
             ? setError('이미 사용 중인 닉네임이에요.')
-            : handleUpdatedNickname(nickname).then((res: any) => {
-                if (res.result === 'SUCCESS') {
-                  router.push('/');
-                }
-              });
+            : router.push('/');
         } else {
           switch (res.error.code) {
             case 'U004':
             case 'U003':
             case 'U002':
-            case 'U001':
-            case 'A003':
               setError(res.error.message);
               break;
             default:

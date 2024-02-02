@@ -16,7 +16,6 @@ interface MapProps {
   onCenterChanged?: (value: any) => void;
   isPanto?: boolean;
   level?: number;
-  onClick?: () => void;
 }
 
 const MapComponent = ({ children, ...props }: MapProps) => {
