@@ -36,7 +36,7 @@ const RecentSearch = ({
                   모두 지우기
                 </button>
               </li>
-              {recentSearch.map((list) => (
+              {recentSearch.reverse().map((list) => (
                 <li key={list} className='flex gap-3 justify-between items-center py-2'>
                   <button
                     className='body2 text-gray-500 flex-grow text-left'

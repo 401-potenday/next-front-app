@@ -44,14 +44,19 @@ const SearchModal = () => {
     setDebouncePlaceList(value);
   };
 
+  const handleUpdateRecentSearch = (search: string) => {
+    let updateRecentSearch = recentSearch ?? [];
+    updateRecentSearch.push(search);
+    setRecentSearch(updateRecentSearch);
+    sessionStorage.setItem('recentSearch', JSON.stringify(updateRecentSearch));
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearch(query.key);
 
     if (!recentSearch?.includes(query.key)) {
-      const updateRecentSearch = recentSearch ? [...recentSearch, query.key] : [query.key];
-      setRecentSearch(updateRecentSearch);
-      sessionStorage.setItem('recentSearch', JSON.stringify(updateRecentSearch));
+      handleUpdateRecentSearch(query.key);
     }
   };
 
@@ -60,9 +65,7 @@ const SearchModal = () => {
     setQuery((prev) => ({ ...prev, key: place.fullAddr }));
 
     if (!recentSearch?.includes(place.fullAddr)) {
-      const updateRecentSearch = recentSearch ? [...recentSearch, place.fullAddr] : [place.fullAddr];
-      setRecentSearch(updateRecentSearch);
-      sessionStorage.setItem('recentSearch', JSON.stringify(updateRecentSearch));
+      handleUpdateRecentSearch(place.fullAddr);
     }
   };
 
