@@ -44,11 +44,16 @@ const SearchModal = () => {
     setDebouncePlaceList(value);
   };
 
-  const handleUpdateRecentSearch = (search: string) => {
-    let updateRecentSearch = recentSearch ?? [];
-    updateRecentSearch.push(search);
-    setRecentSearch(updateRecentSearch);
-    sessionStorage.setItem('recentSearch', JSON.stringify(updateRecentSearch));
+  const handleUpdateRecentSearch = (newSearch: string) => {
+    if (!recentSearch || newSearch === '') return;
+
+    // 이미 있는 검색어라면 아무것도 하지 않음
+    if (recentSearch.includes(newSearch)) {
+      return;
+    }
+
+    // 새로운 검색어를 배열의 맨 뒤에 추가
+    setRecentSearch([...recentSearch, newSearch]);
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -79,6 +84,12 @@ const SearchModal = () => {
     setSearch(null);
     setQuery((prev) => ({ ...prev, key: '' }));
   };
+
+  useEffect(() => {
+    if (recentSearch) {
+      sessionStorage.setItem('recentSearch', JSON.stringify(recentSearch));
+    }
+  }, [recentSearch]);
 
   return (
     <Modal type={MODAL_TYPE.SEARCH} variant={MODAL_VARIANT.ALL}>
