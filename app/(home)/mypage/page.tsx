@@ -81,9 +81,13 @@ const MyPage = () => {
 
   return (
     <Fragment>
-      <NicknameModal handleRefetchNickname={() => refetch()} />
-      <UpdateNoticeModal />
-      <DeleteUserModal />
+      {nickname && (
+        <>
+          <NicknameModal handleRefetchNickname={() => refetch()} />
+          <UpdateNoticeModal />
+          <DeleteUserModal />
+        </>
+      )}
       <div className='flex justify-end px-6 pt-7 pb-5'>
         <div className='text-gray-300 caption cursor-pointer pt-3 pb-5 flex items-center gap-1' onClick={handleLogOut}>
           <IconLogout />
