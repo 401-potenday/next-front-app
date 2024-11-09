@@ -1,14 +1,14 @@
+import fetchExtended from './fetch';
 import { getCookie } from '@/utils/cookieStore';
-import fetchExtended from './fetch'; // 새롭게 만든 fetchExtended 파일을 import
-import { reissueToken } from './login';
+import { handleAuthError, reissueToken } from './login';
 
 /**
  * @param url
  * @param method
  * @param data
  */
-const fetchApi = async <T>(url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', data?: T) => {
-  const accessToken = await getCookie('accessToken');
+export const fetchApi = async <T>(url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE', data?: T) => {
+  const accessToken = (await getCookie('accessToken'))?.value;
 
   if (!accessToken) {
     await reissueToken();
@@ -22,9 +22,14 @@ const fetchApi = async <T>(url: string, method: 'GET' | 'POST' | 'PUT' | 'DELETE
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Credentials': 'true',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + `${accessToken?.value}`,
+        Authorization: 'Bearer ' + `${accessToken}`,
       },
     });
+
+    if (response.status === 401) {
+      await handleAuthError();
+    }
+
     return await response.json();
   } catch (error) {
     console.log(`🚀 ~ fetchApi url: ${url}, error: ${error}`);
