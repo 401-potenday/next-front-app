@@ -1,8 +1,10 @@
 'use client';
+import { redirect } from 'next/navigation';
+
 import { SaveTokenProps } from '@/types/api';
 import { accessTime, refreshTime } from '@/constants/tokenExpires';
 import fetchApi from '../fetchApi';
-import { getCookie, setCookie } from '@/utils/cookieStore';
+import { deleteCookie, getCookie, setCookie } from '@/utils/cookieStore';
 import fetchExtended from '../fetch';
 
 export const getAccountCode = async (provider: string) => {
@@ -35,25 +37,43 @@ export const getToken = async (code: string, provider: string) => {
   return await fetchApi(url, 'POST', data);
 };
 
+export const handleAuthError = async () => {
+  await deleteCookie('accessToken');
+  await deleteCookie('nickname');
+  await deleteCookie('refreshToken');
+
+  alert('로그인이 만료되었습니다. 다시 로그인해주세요.');
+
+  redirect('/login');
+};
+
 export const reissueToken = async () => {
   const accessToken = (await getCookie('accessToken'))?.value;
   const refreshToken = (await getCookie('refreshToken'))?.value;
   const url = `/auth/issue/access-token?refresh_token=${refreshToken}`;
 
-  if (refreshToken && !accessToken) {
-    const newAccessToken = (
-      await (
-        await fetchExtended(url, {
-          method: 'GET',
-          headers: {
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Credentials': 'true',
-            'Content-Type': 'application/json',
-          },
-        })
-      ).json()
-    ).data.accessToken as string;
-    setCookie('accessToken', newAccessToken, { maxAge: accessTime });
+  try {
+    if (refreshToken && !accessToken) {
+      const response = await fetchExtended(url, {
+        method: 'GET',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Credentials': 'true',
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.status === 401) {
+        throw new Error('Unauthorized');
+      }
+
+      const { data } = await response.json();
+      const newAccessToken = data.accessToken as string;
+      setCookie('accessToken', newAccessToken, { maxAge: accessTime });
+    }
+  } catch (error) {
+    // console.log('🚀 ~ reissueToken ~ error:', error);
+    await handleAuthError();
   }
 };
 
