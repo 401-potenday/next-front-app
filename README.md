@@ -77,6 +77,10 @@
   - 상단, 하단 등의 방향 지원
 - 재사용 가능한 설계
   - 다양한 요소에서 일관된 스타일로 동작하도록 설정
+ 
+### NotFound 적용
+- Next.js의 not-found 페이지 기능을 활용하여 사용자에게 유효하지 않은 페이지나 데이터를 요청했을 때 적절한 오류 메시지를 제공
+- 데이터 요청 시 오류가 발생하면 커스텀 훅을 사용하여 NotFound 컴포넌트를 렌더링
 
 <br/>
 
@@ -84,7 +88,7 @@
 
 <br/>
 
-## ✨ 기능 소개
+## ✨ 화면 소개
 
 ### 소셜 로그인
 - **Kakao**를 통한 간편 로그인
@@ -131,6 +135,13 @@
 - 게시글 신고 (신고 시 즉각 블라인드 처리, 관리자 확인 후 삭제 및 복구 처리)
 
 <img src="https://github.com/user-attachments/assets/c6325b46-a49e-450c-b3a9-952f4f994a28" alt="게시글 신고" width="300" />
+
+- 404 페이지
+
+<img src="https://github.com/user-attachments/assets/4478516a-f063-440d-bf80-351463d64410" alt="404 페이지" width="300" />
+
+- 로딩 화면
+<img src="https://github.com/user-attachments/assets/0450ac5d-b743-4265-8eca-f97c837ee00d" alt="로딩" width="300" />
 
 <br/>
 
