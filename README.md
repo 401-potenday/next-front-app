@@ -105,7 +105,7 @@
 - **리스트뷰 무한 스크롤 지원**
 - 데이터 예외 처리를 통해 다양한 UI 제공
 
-<img src="https://github.com/user-attachments/assets/bb9d6939-aa66-4c48-bf1c-1ac7bb11ad7a" alt="홈화면_리스트뷰" width="300" />
+<img src="https://github.com/user-attachments/assets/9e688e53-ab02-4d16-8e91-88a0870bd087" alt="홈화면_리스트뷰" width="300" />
 
 ### 새로운 길고양이 정보 등록
 - **위치 등록**: 지도에서 클릭하여 길고양이 위치를 선택
